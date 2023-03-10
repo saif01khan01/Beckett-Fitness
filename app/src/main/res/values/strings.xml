@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">Beckett Fitness</string>
+    <string name="email">Email</string>
+    <string name="password">Password</string>
+    <string name="login">Login</string>
+    <string name="forgotten_login_details">Forgotten login details?</string>
+    <string name="or_Text">Or</string>
+    <string name="sign_up">Sign up</string>
+</resources>
