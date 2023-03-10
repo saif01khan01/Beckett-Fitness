@@ -13,6 +13,9 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+
 import java.util.List;
 
 public class FoodAdapter extends RecyclerView.Adapter<FoodAdapter.FoodViewHolder> {
@@ -67,9 +70,8 @@ public class FoodAdapter extends RecyclerView.Adapter<FoodAdapter.FoodViewHolder
             foodCalories = itemView.findViewById(R.id.food_calories);
             foodServing = itemView.findViewById(R.id.food_serving_size);
 
-        }
+            }
     }
-
     private void showPopup(FoodItem foodItem, View context) {
         AlertDialog.Builder builder = new AlertDialog.Builder(context.getContext());
         LayoutInflater inflater = LayoutInflater.from(context.getContext());
@@ -108,9 +110,15 @@ public class FoodAdapter extends RecyclerView.Adapter<FoodAdapter.FoodViewHolder
                         int calories = initialCalories * quantity;
                         FoodItem selectedFood = new FoodItem(foodItem.getName(), foodItem.getBrand(), calories, foodItem.getServingSize());
 
+                        // Create an instance of the database helper
+                        FirebaseUser a = FirebaseAuth.getInstance().getCurrentUser();
+                        FoodDatabaseHelper databaseHelper = new FoodDatabaseHelper(context.getContext());
+
+                        // Add the selected food item to the database
+                        databaseHelper.addFoodItem(selectedFood);
                     }
                 })
                 .setNegativeButton("Cancel", null)
                 .show();
     }
-}
+    }
