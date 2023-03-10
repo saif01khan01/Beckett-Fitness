@@ -6,4 +6,5 @@
     <string name="forgotten_login_details">Forgotten login details?</string>
     <string name="or_Text">Or</string>
     <string name="sign_up">Sign up</string>
+    <string name="add_meal_txt">Add Meal/Food Item</string>
 </resources>

@@ -4,12 +4,22 @@
     <option name="filePathToZoomLevelMap">
       <map>
         <entry key="..\:/Users/msaif/AndroidStudioProjects/BeckettFitness/app/src/main/res/drawable/ic_baseline_home_24.xml" value="0.3285" />
+        <entry key="..\:/Users/msaif/AndroidStudioProjects/BeckettFitness/app/src/main/res/drawable/ic_baseline_search_24.xml" value="0.1565" />
+        <entry key="..\:/Users/msaif/AndroidStudioProjects/BeckettFitness/app/src/main/res/layout/activity_breakfast_add_meal.xml" value="0.25" />
         <entry key="..\:/Users/msaif/AndroidStudioProjects/BeckettFitness/app/src/main/res/layout/activity_login.xml" value="0.3625" />
+        <entry key="..\:/Users/msaif/AndroidStudioProjects/BeckettFitness/app/src/main/res/layout/activity_main_screen.xml" value="0.27697189483227563" />
+        <entry key="..\:/Users/msaif/AndroidStudioProjects/BeckettFitness/app/src/main/res/layout/activity_sign_up.xml" value="0.2975630611372381" />
+        <entry key="..\:/Users/msaif/AndroidStudioProjects/BeckettFitness/app/src/main/res/layout/fragment_account.xml" value="0.33" />
+        <entry key="..\:/Users/msaif/AndroidStudioProjects/BeckettFitness/app/src/main/res/layout/fragment_add_meal.xml" value="0.25" />
+        <entry key="..\:/Users/msaif/AndroidStudioProjects/BeckettFitness/app/src/main/res/layout/fragment_breakfast_frag.xml" value="0.2975630611372381" />
+        <entry key="..\:/Users/msaif/AndroidStudioProjects/BeckettFitness/app/src/main/res/layout/fragment_dinner_frag.xml" value="0.2975630611372381" />
         <entry key="..\:/Users/msaif/AndroidStudioProjects/BeckettFitness/app/src/main/res/layout/fragment_home_fragment.xml" value="0.2767210144927536" />
+        <entry key="..\:/Users/msaif/AndroidStudioProjects/BeckettFitness/app/src/main/res/layout/fragment_lunch_frag.xml" value="0.2975630611372381" />
+        <entry key="..\:/Users/msaif/AndroidStudioProjects/BeckettFitness/app/src/main/res/layout/fragment_snacks_frag.xml" value="0.2975630611372381" />
       </map>
     </option>
   </component>
-  <component name="ProjectRootManager" version="2" languageLevel="JDK_11" project-jdk-name="jbr-11" project-jdk-type="JavaSDK">
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_X" default="true" project-jdk-name="Android Studio default JDK" project-jdk-type="JavaSDK">
     <output url="file://$PROJECT_DIR$/build/classes" />
   </component>
   <component name="ProjectType">
