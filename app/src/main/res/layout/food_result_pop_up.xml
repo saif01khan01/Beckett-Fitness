@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:padding="16dp">
+
+    <TextView
+        android:id="@+id/food_name_popup"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Food Name"
+        android:textSize="20sp" />
+
+    <TextView
+        android:id="@+id/food_brand_popup"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Brand Name"
+        android:textSize="16sp" />
+
+    <TextView
+        android:id="@+id/food_calories_popup"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Calories: 0"
+        android:textSize="16sp" />
+
+    <TextView
+        android:id="@+id/food_serving_size_popup"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Serving Size: 0"
+        android:textSize="16sp" />
+
+    <com.example.beckettfitness.numberPicker
+        android:id="@+id/quantity_picker"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginTop="16dp"
+        max="100"
+        min="1" />
+
+</LinearLayout>

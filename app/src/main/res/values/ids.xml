@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <item name="food_name_popup" type="id" />
+    <item name="food_calories_popup" type="id" />
+    <item name="quantity_picker" type="id" />
+    <item name="add_food_button" type="id" />
+</resources>

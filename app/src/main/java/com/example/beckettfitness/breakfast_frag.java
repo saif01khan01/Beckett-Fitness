@@ -17,47 +17,17 @@ import android.widget.Button;
  */
 public class breakfast_frag extends Fragment {
 
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
-
     private Button breakfast_add;
-
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
 
     public breakfast_frag() {
         // Required empty public constructor
     }
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment breakfast_frag.
-     */
-    // TODO: Rename and change types and number of parameters
-    public static breakfast_frag newInstance(String param1, String param2) {
-        breakfast_frag fragment = new breakfast_frag();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
-        return fragment;
+    public static breakfast_frag newInstance() {
+        return new breakfast_frag();
     }
 
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
-    }
+    
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -74,12 +44,11 @@ public class breakfast_frag extends Fragment {
             }
         });
 
-
         return view;
     }
 
     public void openActivity2(){
-        Intent intent = new Intent(breakfast_frag.this.getActivity(), breakfast_add_Meal.class);
+        Intent intent = new Intent(getActivity(), breakfast_add_Meal.class);
         startActivity(intent);
     }
 }
