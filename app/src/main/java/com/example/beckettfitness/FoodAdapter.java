@@ -115,7 +115,7 @@ public class FoodAdapter extends RecyclerView.Adapter<FoodAdapter.FoodViewHolder
                         FoodDatabaseHelper databaseHelper = new FoodDatabaseHelper(context.getContext());
 
                         // Add the selected food item to the database
-                        databaseHelper.addFoodItem(selectedFood);
+                        databaseHelper.addFoodItem(selectedFood , FirebaseAuth.getInstance().getUid());
                     }
                 })
                 .setNegativeButton("Cancel", null)

@@ -17,6 +17,7 @@ import com.example.beckettfitness.FoodItem;
 import com.example.beckettfitness.FoodListAdapter;
 import com.example.beckettfitness.R;
 import com.example.beckettfitness.breakfast_add_Meal;
+import com.google.firebase.auth.FirebaseAuth;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -74,7 +75,8 @@ public class breakfast_frag extends Fragment {
 
     private void loadFoodItems() {
         FoodDatabaseHelper dbHelper = new FoodDatabaseHelper(getActivity());
-        List<FoodItem> foodItems = dbHelper.getAllFoodItems();
+
+        List<FoodItem> foodItems = dbHelper.getAllFoodItems(FirebaseAuth.getInstance().getUid());
         foodListAdapter.setFoodItems(foodItems);
     }
 }

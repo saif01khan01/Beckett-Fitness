@@ -45,7 +45,7 @@ public class FoodListAdapter extends RecyclerView.Adapter<FoodListAdapter.FoodVi
             public boolean onLongClick(View v) {
                 FirebaseUser a = FirebaseAuth.getInstance().getCurrentUser();
                 FoodDatabaseHelper dbHelper = new FoodDatabaseHelper(context);
-                dbHelper.removeFoodItem(foodItem);
+                dbHelper.removeFoodItem(foodItem , FirebaseAuth.getInstance().getUid());
                 foodItems.remove(position);
                 notifyItemRemoved(position);
                 notifyItemRangeChanged(position, foodItems.size());
