@@ -7,4 +7,8 @@
     <string name="or_Text">Or</string>
     <string name="sign_up">Sign up</string>
     <string name="add_meal_txt">Add Meal/Food Item</string>
+    <string name="total_calories_consumed">Total Calories Consumed: %d</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

@@ -4,11 +4,9 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
-import android.widget.Button;
+
 import androidx.appcompat.widget.SearchView;
 import android.widget.Toast;
 
@@ -16,7 +14,6 @@ import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
-import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 
@@ -29,7 +26,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class breakfast_add_Meal extends AppCompatActivity {
+public class add_meal extends AppCompatActivity {
 
     RecyclerView recyclerView;
     SearchView searchView;
@@ -39,7 +36,7 @@ public class breakfast_add_Meal extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_breakfast_add_meal);
+        setContentView(R.layout.activity_add_meal);
 
         recyclerView = findViewById(R.id.foodList);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));

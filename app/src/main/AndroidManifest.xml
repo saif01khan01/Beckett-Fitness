@@ -12,7 +12,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.BeckettFitness">
         <activity
-            android:name=".breakfast_add_Meal"
+            android:name=".add_meal"
             android:exported="false" />
         <activity
             android:name=".SignUpActivity"

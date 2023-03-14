@@ -3,10 +3,11 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".breakfast_frag">
+    android:id="@+id/breakfast_frag"
+    tools:context=".daily_meal_frag">
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/breakfast_recycler_view"
+        android:id="@+id/add_meal_recycler_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginTop="16dp"

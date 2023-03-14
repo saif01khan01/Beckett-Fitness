@@ -19,25 +19,15 @@
             android:id="@+id/breakfastTab"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Breakfast" />
+            android:text="Today" />
 
         <com.google.android.material.tabs.TabItem
             android:id="@+id/lunchTab"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Lunch" />
+            android:text="Week summary" />
 
-        <com.google.android.material.tabs.TabItem
-            android:id="@+id/dinnerTab"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Dinner" />
 
-        <com.google.android.material.tabs.TabItem
-            android:id="@+id/snackTab"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Snacks" />
     </com.google.android.material.tabs.TabLayout>
 
     <androidx.viewpager2.widget.ViewPager2

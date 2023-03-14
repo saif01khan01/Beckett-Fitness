@@ -2,7 +2,6 @@ package com.example.beckettfitness;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentActivity;
 import androidx.viewpager2.adapter.FragmentStateAdapter;
 
 public class ViewPagerAdapter extends FragmentStateAdapter {
@@ -16,13 +15,9 @@ public class ViewPagerAdapter extends FragmentStateAdapter {
     public Fragment createFragment(int position) {
         switch (position) {
             case 0:
-                return new breakfast_frag();
+                return new daily_meal_frag();
             case 1:
-                return new lunch_frag();
-            case 2:
-                return new dinner_frag();
-            case 3:
-                return new snacks_frag();
+                return new summary_frag();
             default:
                 return new home_fragment();
         }
@@ -31,6 +26,6 @@ public class ViewPagerAdapter extends FragmentStateAdapter {
 
     @Override
     public int getItemCount() {
-        return 4;
+        return 2;
     }
 }

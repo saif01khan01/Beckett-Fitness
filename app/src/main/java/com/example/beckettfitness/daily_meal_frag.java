@@ -12,11 +12,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 
-import com.example.beckettfitness.FoodDatabaseHelper;
-import com.example.beckettfitness.FoodItem;
-import com.example.beckettfitness.FoodListAdapter;
-import com.example.beckettfitness.R;
-import com.example.beckettfitness.breakfast_add_Meal;
 import com.google.firebase.auth.FirebaseAuth;
 
 import java.util.ArrayList;
@@ -24,31 +19,31 @@ import java.util.List;
 
 /**
  * A simple {@link Fragment} subclass.
- * Use the {@link breakfast_frag#newInstance} factory method to
+ * Use the {@link daily_meal_frag#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class breakfast_frag extends Fragment {
+public class daily_meal_frag extends Fragment {
 
     private Button breakfast_add;
     private RecyclerView recyclerView;
     private FoodListAdapter foodListAdapter;
 
-    public breakfast_frag() {
+    public daily_meal_frag() {
         // Required empty public constructor
     }
 
-    public static breakfast_frag newInstance() {
-        return new breakfast_frag();
+    public static daily_meal_frag newInstance() {
+        return new daily_meal_frag();
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_breakfast_frag, container, false);
+        View view = inflater.inflate(R.layout.fragment_add_meal_frag, container, false);
 
         breakfast_add = (Button) view.findViewById(R.id.breakfast_add);
-        recyclerView = (RecyclerView) view.findViewById(R.id.breakfast_recycler_view);
+        recyclerView = (RecyclerView) view.findViewById(R.id.add_meal_recycler_view);
 
         LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
         recyclerView.setLayoutManager(layoutManager);
@@ -67,16 +62,42 @@ public class breakfast_frag extends Fragment {
 
         return view;
     }
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        // Refresh the data
+        loadFoodItems();
+        int totalCalories = getTotalCaloriesConsumed();
+
+        // Update the adapter with the new data
+        FoodDatabaseHelper dbHelper = new FoodDatabaseHelper(getContext());
+        foodListAdapter.setFoodItems(dbHelper.getAllFoodItems(FirebaseAuth.getInstance().getUid()));
+        foodListAdapter.notifyDataSetChanged();
+    }
 
     public void openActivity2(){
-        Intent intent = new Intent(getActivity(), breakfast_add_Meal.class);
+        Intent intent = new Intent(getActivity(), add_meal.class);
         startActivity(intent);
     }
 
-    private void loadFoodItems() {
+    void loadFoodItems() {
         FoodDatabaseHelper dbHelper = new FoodDatabaseHelper(getActivity());
 
         List<FoodItem> foodItems = dbHelper.getAllFoodItems(FirebaseAuth.getInstance().getUid());
         foodListAdapter.setFoodItems(foodItems);
     }
+
+    public int getTotalCaloriesConsumed() {
+        int totalCalories = 0;
+
+        FoodDatabaseHelper dbHelper = new FoodDatabaseHelper(getContext());
+        List<FoodItem> foodItemList = dbHelper.getAllFoodItems(FirebaseAuth.getInstance().getUid());
+
+        for (FoodItem foodItem : foodItemList) {
+            totalCalories += foodItem.getCalories();
+        }
+        return totalCalories;
+    }
+
 }

@@ -8,11 +8,11 @@ import android.view.ViewGroup;
 
 /**
  * A simple {@link Fragment} subclass.
- * Use the {@link snacks_frag#newInstance} factory method to
+ * Use the {@link summary_frag#newInstance} factory method to
  * create an instance of this fragment.
  *
  */
-public class snacks_frag extends Fragment {
+public class summary_frag extends Fragment {
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -29,11 +29,11 @@ public class snacks_frag extends Fragment {
      *
      * @param param1 Parameter 1.
      * @param param2 Parameter 2.
-     * @return A new instance of fragment snacks_frag.
+     * @return A new instance of fragment summary_frag.
      */
     // TODO: Rename and change types and number of parameters
-    public static snacks_frag newInstance(String param1, String param2) {
-        snacks_frag fragment = new snacks_frag();
+    public static summary_frag newInstance(String param1, String param2) {
+        summary_frag fragment = new summary_frag();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);
@@ -41,7 +41,7 @@ public class snacks_frag extends Fragment {
         return fragment;
     }
 
-    public snacks_frag() {
+    public summary_frag() {
         // Required empty public constructor
     }
 
@@ -58,6 +58,6 @@ public class snacks_frag extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_snacks_frag, container, false);
+        return inflater.inflate(R.layout.fragment_summary_frag, container, false);
     }
 }

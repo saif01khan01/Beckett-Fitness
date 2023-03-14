@@ -5,13 +5,13 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".breakfast_add_Meal">
+    tools:context=".add_meal">
 
     <TextView
-        android:id="@+id/break_title"
+        android:id="@+id/add_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Add Breakfast"
+        android:text="Add Food item"
         android:textColor="@color/purple_700"
         android:textSize="34sp"
         app:layout_constraintStart_toStartOf="parent"
@@ -26,7 +26,7 @@
         android:layout_height="wrap_content"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/break_title"
+        app:layout_constraintTop_toBottomOf="@id/add_title"
         app:queryHint="Search for food items"
         app:iconifiedByDefault="false" />
 
