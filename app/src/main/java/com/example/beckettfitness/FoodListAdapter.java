@@ -1,5 +1,6 @@
 package com.example.beckettfitness;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -34,7 +35,7 @@ public class FoodListAdapter extends RecyclerView.Adapter<FoodListAdapter.FoodVi
     }
 
     @Override
-    public void onBindViewHolder(@NonNull FoodViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull FoodViewHolder holder, @SuppressLint("RecyclerView") int position) {
         FoodItem foodItem = foodItems.get(position);
         holder.nameTextView.setText(foodItem.getName());
         holder.brandTextView.setText(foodItem.getBrand());

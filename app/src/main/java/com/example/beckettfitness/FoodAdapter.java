@@ -16,11 +16,19 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
+import java.util.Calendar;
 import java.util.List;
 
 public class FoodAdapter extends RecyclerView.Adapter<FoodAdapter.FoodViewHolder> {
 
     private List<FoodItem> foodList;
+
+
+    // Create a variable to hold the total calories
+    int[] totalCalories = {0};
+
+    // Create a calendar object to store the previous date
+    Calendar[] prevDate = {Calendar.getInstance()};
 
     public FoodAdapter(List<FoodItem> foodList) {
         this.foodList = foodList;
@@ -72,6 +80,10 @@ public class FoodAdapter extends RecyclerView.Adapter<FoodAdapter.FoodViewHolder
 
             }
     }
+
+
+
+
     private void showPopup(FoodItem foodItem, View context) {
         AlertDialog.Builder builder = new AlertDialog.Builder(context.getContext());
         LayoutInflater inflater = LayoutInflater.from(context.getContext());
@@ -102,6 +114,12 @@ public class FoodAdapter extends RecyclerView.Adapter<FoodAdapter.FoodViewHolder
             }
         });
 
+        // Create a variable to hold the total calories
+        int[] totalCalories = {0};
+
+// Create a calendar object to store the previous date
+        final Calendar[] prevDate = {Calendar.getInstance()};
+
         builder.setView(popupView)
                 .setPositiveButton("Add", new DialogInterface.OnClickListener() {
                     @Override
@@ -110,15 +128,29 @@ public class FoodAdapter extends RecyclerView.Adapter<FoodAdapter.FoodViewHolder
                         int calories = initialCalories * quantity;
                         FoodItem selectedFood = new FoodItem(foodItem.getName(), foodItem.getBrand(), calories, foodItem.getServingSize());
 
-                        // Create an instance of the database helper
+                        // Add the selected food item to the database
                         FirebaseUser a = FirebaseAuth.getInstance().getCurrentUser();
                         FoodDatabaseHelper databaseHelper = new FoodDatabaseHelper(context.getContext());
+                        databaseHelper.addFoodItem(selectedFood, FirebaseAuth.getInstance().getUid());
 
-                        // Add the selected food item to the database
-                        databaseHelper.addFoodItem(selectedFood , FirebaseAuth.getInstance().getUid());
+                        // Add the calories to the total calories variable
+                        totalCalories[0] += calories;
+
+                        System.out.println(totalCalories[0]);
+
+                        // Check if the current date is different from the previous date
+                        Calendar currDate = Calendar.getInstance();
+                        if (prevDate[0].get(Calendar.DAY_OF_YEAR) != currDate.get(Calendar.DAY_OF_YEAR)) {
+                            // Reset the total calories if it's a new day
+                            totalCalories[0] = 0;
+                        }
+                        prevDate[0] = currDate;
                     }
                 })
                 .setNegativeButton("Cancel", null)
                 .show();
+
+
     }
+
     }
