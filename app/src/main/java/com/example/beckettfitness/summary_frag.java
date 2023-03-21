@@ -5,6 +5,9 @@ import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
+
+import com.google.firebase.auth.FirebaseAuth;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -22,6 +25,8 @@ public class summary_frag extends Fragment {
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
+
+    TextView caloriesTotalTextView;
 
     /**
      * Use this factory method to create a new instance of
@@ -57,7 +62,36 @@ public class summary_frag extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_summary_frag, container, false);
+        View view = inflater.inflate(R.layout.fragment_summary_frag, container, false);
+
+        // Get the current user's ID
+        String userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
+
+        // Retrieve the total calories for the user
+        FoodDatabaseHelper databaseHelper = new FoodDatabaseHelper(getContext());
+        int caloriesTotal = databaseHelper.getCaloriesTotal(userId);
+
+
+
+        // Set the value in the TextView
+        caloriesTotalTextView = view.findViewById(R.id.total_calories_value_textview);
+        caloriesTotalTextView.setText(String.valueOf(caloriesTotal));
+
+        return view;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        // Get the current user's ID
+        String userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
+
+        // Retrieve the total calories for the user
+        FoodDatabaseHelper databaseHelper = new FoodDatabaseHelper(getContext());
+        int caloriesTotal = databaseHelper.getCaloriesTotal(userId);
+
+        // Set the value in the TextView
+        caloriesTotalTextView.setText(String.valueOf(caloriesTotal));
+
     }
 }

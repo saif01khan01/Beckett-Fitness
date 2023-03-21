@@ -12,7 +12,7 @@ import java.util.List;
 public class FoodDatabaseHelper extends SQLiteOpenHelper {
 
     private static final String DATABASE_NAME = "food_database";
-    private static final int DATABASE_VERSION = 2;
+    private static final int DATABASE_VERSION = 11;
 
     public static final String TABLE_FOOD = "food";
     public static final String COLUMN_ID = "_id";
@@ -23,6 +23,13 @@ public class FoodDatabaseHelper extends SQLiteOpenHelper {
 
     public static final String COLUMN_USER_ID = "user_id";
 
+    public static final String TABLE_CALORIES = "calories";
+    public static final String COLUMN_CALORIES_ID = "_id";
+    public static final String COLUMN_CALORIES_VALUE = "calories_value";
+
+
+
+
 
     private static final String CREATE_FOOD_TABLE =
             "CREATE TABLE " + TABLE_FOOD + " (" +
@@ -32,6 +39,12 @@ public class FoodDatabaseHelper extends SQLiteOpenHelper {
                     COLUMN_BRAND + " TEXT, " +
                     COLUMN_CALORIES + " INTEGER, " +
                     COLUMN_SERVING_SIZE + " TEXT)";
+
+    private static final String CREATE_CALORIES_TABLE =
+            "CREATE TABLE " + TABLE_CALORIES + " (" +
+                    COLUMN_CALORIES_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                    COLUMN_CALORIES_VALUE + " INTEGER, " +
+                    COLUMN_USER_ID + " TEXT)";
 
 
     public FoodDatabaseHelper(Context context) {
@@ -68,6 +81,51 @@ public class FoodDatabaseHelper extends SQLiteOpenHelper {
         return foodItemList;
     }
 
+    public void resetValues() {
+        SQLiteDatabase db = getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put(COLUMN_CALORIES_VALUE, 0);
+        db.update(TABLE_CALORIES, values, null, null);
+        db.delete(TABLE_FOOD, null, null);
+        db.close();
+    }
+
+    public int getCaloriesTotal(String userId) {
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        // Define the columns to be retrieved
+        String[] projection = {
+                "SUM(" + COLUMN_CALORIES_VALUE + ")"
+        };
+
+        // Define the selection criteria
+        String selection = COLUMN_USER_ID + "=?";
+        String[] selectionArgs = { userId };
+
+        // Execute the query
+        Cursor cursor = db.query(
+                TABLE_CALORIES,
+                projection,
+                selection,
+                selectionArgs,
+                null,
+                null,
+                null
+        );
+
+        int caloriesTotal = 0;
+
+        if (cursor.moveToFirst()) {
+            caloriesTotal = cursor.getInt(0);
+        }
+
+        cursor.close();
+        db.close();
+
+        return caloriesTotal;
+    }
+
+
 
 
     public void addFoodItem(FoodItem foodItem, String userId) {
@@ -78,8 +136,17 @@ public class FoodDatabaseHelper extends SQLiteOpenHelper {
         values.put(COLUMN_BRAND, foodItem.getBrand());
         values.put(COLUMN_CALORIES, foodItem.getCalories());
         values.put(COLUMN_SERVING_SIZE, foodItem.getServingSize());
-        db.insert(TABLE_FOOD, null, values);
+        long foodItemId = db.insert(TABLE_FOOD, null, values);
         db.close();
+
+        // Insert the calories value into the calories table
+        SQLiteDatabase dbCalories = this.getWritableDatabase();
+        ContentValues valuesCalories = new ContentValues();
+        valuesCalories.put(COLUMN_CALORIES_ID, foodItemId);
+        valuesCalories.put(COLUMN_CALORIES_VALUE, foodItem.getCalories());
+        valuesCalories.put(COLUMN_USER_ID, userId);
+        dbCalories.insert(TABLE_CALORIES, null, valuesCalories);
+        dbCalories.close();
     }
 
 
@@ -99,11 +166,13 @@ public class FoodDatabaseHelper extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase db) {
         db.execSQL(CREATE_FOOD_TABLE);
+        db.execSQL(CREATE_CALORIES_TABLE);
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_FOOD);
+        db.execSQL("DROP TABLE IF EXISTS " + TABLE_CALORIES);
         onCreate(db);
     }
 }

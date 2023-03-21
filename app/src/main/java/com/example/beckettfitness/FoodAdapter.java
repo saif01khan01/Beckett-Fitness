@@ -133,18 +133,6 @@ public class FoodAdapter extends RecyclerView.Adapter<FoodAdapter.FoodViewHolder
                         FoodDatabaseHelper databaseHelper = new FoodDatabaseHelper(context.getContext());
                         databaseHelper.addFoodItem(selectedFood, FirebaseAuth.getInstance().getUid());
 
-                        // Add the calories to the total calories variable
-                        totalCalories[0] += calories;
-
-                        System.out.println(totalCalories[0]);
-
-                        // Check if the current date is different from the previous date
-                        Calendar currDate = Calendar.getInstance();
-                        if (prevDate[0].get(Calendar.DAY_OF_YEAR) != currDate.get(Calendar.DAY_OF_YEAR)) {
-                            // Reset the total calories if it's a new day
-                            totalCalories[0] = 0;
-                        }
-                        prevDate[0] = currDate;
                     }
                 })
                 .setNegativeButton("Cancel", null)
