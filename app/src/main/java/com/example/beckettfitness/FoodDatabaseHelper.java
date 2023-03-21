@@ -14,6 +14,8 @@ public class FoodDatabaseHelper extends SQLiteOpenHelper {
     private static final String DATABASE_NAME = "food_database";
     private static final int DATABASE_VERSION = 11;
 
+
+    //Food table columns
     public static final String TABLE_FOOD = "food";
     public static final String COLUMN_ID = "_id";
     public static final String COLUMN_NAME = "name";
@@ -23,9 +25,22 @@ public class FoodDatabaseHelper extends SQLiteOpenHelper {
 
     public static final String COLUMN_USER_ID = "user_id";
 
+
+    //Calories table columns
     public static final String TABLE_CALORIES = "calories";
     public static final String COLUMN_CALORIES_ID = "_id";
     public static final String COLUMN_CALORIES_VALUE = "calories_value";
+
+
+    // Account details columns
+    public static final String TABLE_ACCOUNT = "food";
+    private static final String COLUMN_ACCOUNT_ID = "account_id";
+    private static final String COLUMN_AGE = "age";
+    private static final String COLUMN_HEIGHT = "height";
+    private static final String COLUMN_WEIGHT = "weight";
+    private static final String COLUMN_EXERCISE_LEVEL = "exercise_level";
+
+
 
 
 
@@ -45,6 +60,16 @@ public class FoodDatabaseHelper extends SQLiteOpenHelper {
                     COLUMN_CALORIES_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
                     COLUMN_CALORIES_VALUE + " INTEGER, " +
                     COLUMN_USER_ID + " TEXT)";
+
+    private static final String CREATE_ACCOUNT_TABLE =
+            "CREATE TABLE " + TABLE_ACCOUNT + " (" +
+                    COLUMN_ACCOUNT_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                    COLUMN_USER_ID + " TEXT, " +
+                    COLUMN_AGE + " INTEGER, " +
+                    COLUMN_HEIGHT + " REAL, " +
+                    COLUMN_WEIGHT + " REAL, " +
+                    COLUMN_EXERCISE_LEVEL + " TEXT)";
+
 
 
     public FoodDatabaseHelper(Context context) {
@@ -87,6 +112,13 @@ public class FoodDatabaseHelper extends SQLiteOpenHelper {
         values.put(COLUMN_CALORIES_VALUE, 0);
         db.update(TABLE_CALORIES, values, null, null);
         db.delete(TABLE_FOOD, null, null);
+        db.close();
+    }
+
+    public void removeAccInfo(String user_id) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        String query = "DELETE FROM " + TABLE_ACCOUNT + " WHERE " + COLUMN_USER_ID + " = ?";
+        db.execSQL(query, new String[]{user_id});
         db.close();
     }
 
@@ -166,6 +198,7 @@ public class FoodDatabaseHelper extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase db) {
         db.execSQL(CREATE_FOOD_TABLE);
+        db.execSQL(CREATE_ACCOUNT_TABLE);
         db.execSQL(CREATE_CALORIES_TABLE);
     }
 
@@ -173,6 +206,7 @@ public class FoodDatabaseHelper extends SQLiteOpenHelper {
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_FOOD);
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_CALORIES);
+        db.execSQL("DROP TABLE IF EXISTS " + TABLE_ACCOUNT);
         onCreate(db);
     }
 }

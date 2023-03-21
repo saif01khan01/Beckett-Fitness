@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <array name="exercise_levels">
+        <item>Sedentary</item>
+        <item>Light</item>
+        <item>Moderate</item>
+        <item>Active</item>
+        <item>Very Active</item>
+        <item>Extra Active</item>
+    </array>
+</resources>

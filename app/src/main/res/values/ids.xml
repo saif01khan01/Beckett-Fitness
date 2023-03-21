@@ -4,4 +4,10 @@
     <item name="food_calories_popup" type="id" />
     <item name="quantity_picker" type="id" />
     <item name="add_food_button" type="id" />
+    <item name="edit_weight" type="id" />
+    <item name="save_button" type="id" />
+    <item name="age_edittext" type="id"/>
+    <item name="height_edittext" type="id"/>
+    <item name="weight_edittext" type="id"/>
+    <item name="exercise_level_spinner" type="id"/>
 </resources>
