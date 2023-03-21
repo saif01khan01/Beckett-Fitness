@@ -5,6 +5,11 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.widget.Toast;
+
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -34,11 +39,15 @@ public class FoodDatabaseHelper extends SQLiteOpenHelper {
 
     // Account details columns
     public static final String TABLE_ACCOUNT = "food";
-    private static final String COLUMN_ACCOUNT_ID = "account_id";
-    private static final String COLUMN_AGE = "age";
-    private static final String COLUMN_HEIGHT = "height";
-    private static final String COLUMN_WEIGHT = "weight";
-    private static final String COLUMN_EXERCISE_LEVEL = "exercise_level";
+    static final String COLUMN_ACCOUNT_ID = "account_id";
+    static final String COLUMN_AGE = "age";
+    static final String COLUMN_HEIGHT = "height";
+    static final String COLUMN_WEIGHT = "weight";
+    static final String COLUMN_EXERCISE_LEVEL = "exercise_level";
+
+    static  final String COLUMN_WEIGHT_GOALS = "weight_goals";
+
+    static  final String COLUMN_GENDER = "weight_goals";
 
 
 
@@ -66,8 +75,10 @@ public class FoodDatabaseHelper extends SQLiteOpenHelper {
                     COLUMN_ACCOUNT_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
                     COLUMN_USER_ID + " TEXT, " +
                     COLUMN_AGE + " INTEGER, " +
+                    COLUMN_GENDER + " REAL, " +
                     COLUMN_HEIGHT + " REAL, " +
                     COLUMN_WEIGHT + " REAL, " +
+                    COLUMN_WEIGHT_GOALS + " REAL, " +
                     COLUMN_EXERCISE_LEVEL + " TEXT)";
 
 
@@ -106,14 +117,70 @@ public class FoodDatabaseHelper extends SQLiteOpenHelper {
         return foodItemList;
     }
 
+
+
+    public int getMaintainWeightCalories(JSONObject jsonResponse) throws JSONException {
+        JSONObject goals = jsonResponse.getJSONObject("data").getJSONObject("goals");
+        return goals.getInt("maintain weight");
+    }
+
+    public int getMildWeightLossCalories(JSONObject jsonResponse) throws JSONException {
+        JSONObject goals = jsonResponse.getJSONObject("data").getJSONObject("goals");
+        JSONObject mildWeightLoss = goals.getJSONObject("Mild weight loss");
+        return mildWeightLoss.getInt("calory");
+    }
+
+    public int getWeightLossCalories(JSONObject jsonResponse) throws JSONException {
+        JSONObject goals = jsonResponse.getJSONObject("data").getJSONObject("goals");
+        JSONObject weightLoss = goals.getJSONObject("Weight loss");
+        return weightLoss.getInt("calory");
+    }
+
+    public int getExtremeWeightLossCalories(JSONObject jsonResponse) throws JSONException {
+        JSONObject goals = jsonResponse.getJSONObject("data").getJSONObject("goals");
+        JSONObject extremeWeightLoss = goals.getJSONObject("Extreme weight loss");
+        return extremeWeightLoss.getInt("calory");
+    }
+
+    public int getMildWeightGainCalories(JSONObject jsonResponse) throws JSONException {
+        JSONObject goals = jsonResponse.getJSONObject("data").getJSONObject("goals");
+        JSONObject mildWeightGain = goals.getJSONObject("Mild weight gain");
+        return mildWeightGain.getInt("calory");
+    }
+
+    public int getWeightGainCalories(JSONObject jsonResponse) throws JSONException {
+        JSONObject goals = jsonResponse.getJSONObject("data").getJSONObject("goals");
+        JSONObject weightGain = goals.getJSONObject("Weight gain");
+        return weightGain.getInt("calory");
+    }
+
+    public int getExtremeWeightGainCalories(JSONObject jsonResponse) throws JSONException {
+        JSONObject goals = jsonResponse.getJSONObject("data").getJSONObject("goals");
+        JSONObject extremeWeightGain = goals.getJSONObject("Extreme weight gain");
+        return extremeWeightGain.getInt("calory");
+    }
+
+
+
+
     public void resetValues() {
         SQLiteDatabase db = getWritableDatabase();
-        ContentValues values = new ContentValues();
-        values.put(COLUMN_CALORIES_VALUE, 0);
-        db.update(TABLE_CALORIES, values, null, null);
+
+        // Reset TABLE_CALORIES
+        ContentValues caloriesValues = new ContentValues();
+        caloriesValues.put(COLUMN_CALORIES_VALUE, 0);
+        db.update(TABLE_CALORIES, caloriesValues, null, null);
+
+        // Reset TABLE_FOOD
         db.delete(TABLE_FOOD, null, null);
+
+        // Reset TABLE_ACCOUNT
+        //db.delete(TABLE_ACCOUNT, null, null);
+
         db.close();
     }
+
+
 
     public void removeAccInfo(String user_id) {
         SQLiteDatabase db = this.getWritableDatabase();
@@ -190,6 +257,9 @@ public class FoodDatabaseHelper extends SQLiteOpenHelper {
         db.delete(TABLE_FOOD, selection, selectionArgs);
         db.close();
     }
+
+
+
 
 
 

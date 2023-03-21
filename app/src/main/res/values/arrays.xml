@@ -1,11 +1,26 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <array name="exercise_levels">
+    <string-array name="exercise_levels">
         <item>Sedentary</item>
         <item>Light</item>
         <item>Moderate</item>
         <item>Active</item>
         <item>Very Active</item>
         <item>Extra Active</item>
-    </array>
+    </string-array>
+
+    <string-array name="weight_loss_goals">
+        <item>Maintain weight</item>
+        <item>Mild weight loss</item>
+        <item>Weight loss</item>
+        <item>Extreme weight loss</item>
+        <item>Mild weight gain</item>
+        <item>Weight gain</item>
+        <item>Extreme weight gain</item>
+    </string-array>
+
+    <string-array name="genders">
+        <item>Male</item>
+        <item>Female</item>
+    </string-array>
 </resources>

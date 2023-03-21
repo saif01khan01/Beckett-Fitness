@@ -12,4 +12,6 @@
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="select_exercise_level">Select Exercise Level</string>
+    <string name="select_weight_loss_goal">Select Weight Loss Goal</string>
+    <string name="gender_select">Select Gender</string>
 </resources>

@@ -6,11 +6,20 @@ public class AccountDetails {
     private double weight;
     private String exerciseLevel;
 
-    public AccountDetails(int age, double height, double weight, String exerciseLevel) {
+    private String gender;
+
+    private String weightGoal;
+
+    String userID;
+
+    public AccountDetails(int age, double height, double weight, String gender, String exerciseLevel, String weightGoal, String userID) {
         this.age = age;
         this.height = height;
         this.weight = weight;
+        this.gender = gender;
         this.exerciseLevel = exerciseLevel;
+        this.weightGoal = weightGoal;
+        this.userID = userID;
     }
 
     public int getAge() {
@@ -24,6 +33,8 @@ public class AccountDetails {
     public double getHeight() {
         return height;
     }
+
+    public String getWeightGoal(){ return weightGoal; }
 
     public void setHeight(double height) {
         this.height = height;
@@ -43,5 +54,9 @@ public class AccountDetails {
 
     public void setExerciseLevel(String exerciseLevel) {
         this.exerciseLevel = exerciseLevel;
+    }
+
+    public String getGender() {
+        return gender;
     }
 }

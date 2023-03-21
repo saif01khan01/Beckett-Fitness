@@ -1,8 +1,18 @@
 package com.example.beckettfitness;
 
+import static android.media.tv.TvContract.PreviewPrograms.COLUMN_WEIGHT;
+import static com.example.beckettfitness.FoodDatabaseHelper.COLUMN_AGE;
+import static com.example.beckettfitness.FoodDatabaseHelper.COLUMN_EXERCISE_LEVEL;
+import static com.example.beckettfitness.FoodDatabaseHelper.COLUMN_GENDER;
+import static com.example.beckettfitness.FoodDatabaseHelper.COLUMN_HEIGHT;
+import static com.example.beckettfitness.FoodDatabaseHelper.COLUMN_USER_ID;
+import static com.example.beckettfitness.FoodDatabaseHelper.TABLE_ACCOUNT;
+
 import android.app.AlertDialog;
+import android.content.ContentValues;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,6 +20,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.Toast;
 
 import androidx.fragment.app.Fragment;
 
@@ -61,8 +72,17 @@ public class AccountFragment extends Fragment {
                         Spinner exerciseLevelSpinner = editAccountView.findViewById(R.id.exercise_level_spinner);
                         String exerciseLevel = exerciseLevelSpinner.getSelectedItem().toString();
 
+
+                        Spinner weightGoalSpinner = editAccountView.findViewById(R.id.weight_loss_goal_spinner);
+                        String weightGoal = weightGoalSpinner.getSelectedItem().toString();
+
+                        Spinner genderSpinner = editAccountView.findViewById(R.id.gender_spinner);
+                        String gender = genderSpinner.getSelectedItem().toString();
+
                         // Create an AccountDetails object with the retrieved values
-                        AccountDetails accountDetails = new AccountDetails(age, height, weight, exerciseLevel);
+                        AccountDetails accountDetails = new AccountDetails(age, height, weight, gender, exerciseLevel , weightGoal, FirebaseAuth.getInstance().getUid());
+
+                        saveAccountDetails(accountDetails);
                     }
                 });
                 builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
@@ -79,6 +99,37 @@ public class AccountFragment extends Fragment {
 
         return view;
     }
+
+    private void saveAccountDetails(AccountDetails accountDetails) {
+        // Add the AccountDetails object to the database
+        FoodDatabaseHelper databaseHelper = new FoodDatabaseHelper(getContext());
+        SQLiteDatabase db = databaseHelper.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put(COLUMN_USER_ID, FirebaseAuth.getInstance().getUid());
+        values.put(COLUMN_AGE, accountDetails.getAge());
+        values.put(COLUMN_HEIGHT, accountDetails.getHeight());
+        values.put(COLUMN_WEIGHT, accountDetails.getWeight());
+        values.put(COLUMN_GENDER, accountDetails.getGender());
+        values.put(COLUMN_EXERCISE_LEVEL, accountDetails.getExerciseLevel());
+
+        databaseHelper.removeAccInfo(FirebaseAuth.getInstance().getUid());
+
+        long newRowId = db.insert(TABLE_ACCOUNT, null, values);
+
+        // Show a toast message to indicate that the account details have been saved
+        if (newRowId == -1) {
+            // Insert failed
+            Toast.makeText(getContext(), "Error: Failed to save account details", Toast.LENGTH_SHORT).show();
+        } else {
+            // Insert successful
+            Toast.makeText(getContext(), "Account details saved", Toast.LENGTH_SHORT).show();
+            summary_frag summary_frag = new summary_frag();
+            summary_frag.makeApiCall(accountDetails.getAge(), accountDetails.getGender(), accountDetails.getHeight(), accountDetails.getWeight(), accountDetails.getExerciseLevel(), accountDetails.getWeightGoal());
+        }
+        db.close();
+    }
+
+
 
 
 }
