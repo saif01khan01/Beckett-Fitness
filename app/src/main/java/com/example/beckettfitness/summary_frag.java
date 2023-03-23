@@ -1,5 +1,7 @@
 package com.example.beckettfitness;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
@@ -36,9 +38,6 @@ public class summary_frag extends Fragment {
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
 
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
 
     TextView caloriesTotalTextView;
 
@@ -46,13 +45,11 @@ public class summary_frag extends Fragment {
 
     int calorieGoal;
 
+    JSONObject rp;
     /**
      * Use this factory method to create a new instance of
      * this fragment using the provided parameters.
      *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment summary_frag.
      */
     // TODO: Rename and change types and number of parameters
     public static summary_frag newInstance(String param1, String param2) {
@@ -71,10 +68,8 @@ public class summary_frag extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
+        //goalCalorieTextView = (TextView)getView().findViewById(R.id.goal_value);
+
     }
 
     @Override
@@ -95,107 +90,36 @@ public class summary_frag extends Fragment {
         caloriesTotalTextView.setText(String.valueOf(caloriesTotal));
 
         goalCalorieTextView = view.findViewById(R.id.goal_value);
-
-        goalCalorieTextView.setText(String.valueOf(databaseHelper.getCaloriesGoal()));
+        AccountFragment accountFragment = new AccountFragment();
+        goalCalorieTextView.setText(String.valueOf(accountFragment.getGoalNo()));
         return view;
     }
 
     @Override
     public void onResume() {
         super.onResume();
-        // Get the current user's ID
-        String userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
 
         // Retrieve the total calories for the user
+        String userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
         FoodDatabaseHelper databaseHelper = new FoodDatabaseHelper(getContext());
         int caloriesTotal = databaseHelper.getCaloriesTotal(userId);
 
-        // Set the value in the TextView
+        // Update the total calories TextView
         caloriesTotalTextView.setText(String.valueOf(caloriesTotal));
 
-        goalCalorieTextView.setText(String.valueOf(databaseHelper.getCaloriesGoal()));
+        // Retrieve the goal calories from SharedPreferences
+        SharedPreferences sharedPreferences = getContext().getSharedPreferences("MyPrefs", Context.MODE_PRIVATE);
+        int goalCalories = sharedPreferences.getInt("goal_calories", 0);
 
-
-
+        // Update the goal calories TextView
+        goalCalorieTextView.setText(String.valueOf(goalCalories));
     }
 
-    public void makeApiCall(int age, String gender, double height, double weight, String activityLevel, String goals, View v) {
 
-        String dbActivityLevel;
 
-        if(activityLevel.equals("Sedentary")) {
-            dbActivityLevel = "level_1";
-        } else if (activityLevel.equals("Light")) {
-            dbActivityLevel = "level_2";
-        }else if (activityLevel.equals("Moderate")) {
-            dbActivityLevel = "level_3";
-        }else if (activityLevel.equals("Active")) {
-            dbActivityLevel = "level_4";
-        }else if (activityLevel.equals("Very Active")) {
-            dbActivityLevel = "level_5";
-        }else if (activityLevel.equals("Extra Active")) {
-            dbActivityLevel = "level_6";
-        } else {
-        dbActivityLevel = null;
-        Toast.makeText(v.getContext(), "Check activity level value", Toast.LENGTH_LONG).show();
-        }
-        String url = "https://fitness-calculator.p.rapidapi.com/dailycalorie?age=" + age +
-                "&gender=" + gender +
-                "&height=" + height +
-                "&weight=" + weight +
-                "&activitylevel=" + dbActivityLevel;
 
-            JsonObjectRequest jsonObjectRequest = new JsonObjectRequest
-                    (Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
 
-                        @Override
-                        public void onResponse(JSONObject response) {
-                            // Handle the response
-                            try {
-                                FoodDatabaseHelper foodDatabaseHelper = new FoodDatabaseHelper(getContext());
-
-                                if (goals.equals("Maintain weight")) {
-                                    foodDatabaseHelper.getMaintainWeightCalories(response);
-                                } else if (goals.equals("Mild weight loss")) {
-                                    foodDatabaseHelper.getMildWeightLossCalories(response);
-                                } else if (goals.equals("Weight loss")) {
-                                    foodDatabaseHelper.getMildWeightLossCalories(response);
-                                } else if (goals.equals("Extreme weight loss")) {
-                                    foodDatabaseHelper.getMildWeightLossCalories(response);
-                                } else if (goals.equals("Mild weight gain")) {
-                                    foodDatabaseHelper.getMildWeightLossCalories(response);
-                                } else if (goals.equals("Weight gain")) {
-                                     foodDatabaseHelper.getMildWeightLossCalories(response);
-                                } else if (goals.equals("Extreme weight gain")) {
-                                     foodDatabaseHelper.getMildWeightLossCalories(response);
-                                } else {
-                                    Toast.makeText(getContext(), "Set up account. Go to Account > Edit Account", Toast.LENGTH_SHORT).show();
-                                }
-                            } catch (JSONException e) {
-                                e.printStackTrace();
-                            }
-                        }
-                    }, new Response.ErrorListener() {
-
-                        @Override
-                        public void onErrorResponse(VolleyError error) {
-                            // Handle the error
-                        }
-                    }) {
-                @Override
-                public Map<String, String> getHeaders() throws AuthFailureError {
-                    Map<String, String> headers = new HashMap<>();
-                    headers.put("X-RapidAPI-Key", "6c7b75ffd0msha91b4c46d576001p10417djsn2af2134e89a3");
-                    headers.put("X-RapidAPI-Host", "fitness-calculator.p.rapidapi.com");
-                    return headers;
-                }
-            };
-
-            // Add the request to the Volley request queue
-            RequestQueue queue = Volley.newRequestQueue(v.getContext());
-            queue.add(jsonObjectRequest);
-        }
-    }
+}
 
 
 

@@ -128,57 +128,42 @@ public class FoodDatabaseHelper extends SQLiteOpenHelper {
         return caloriesGoal;
     }
 
-    public int getMaintainWeightCalories(JSONObject jsonResponse) throws JSONException {
+    public int getGoalCalories(JSONObject jsonResponse, String goal) throws JSONException {
         JSONObject goals = jsonResponse.getJSONObject("data").getJSONObject("goals");
-        setCaloriesGoal(goals.getInt("maintain weight"));
-        System.out.println(goals.getInt("maintain weight"));
-        return goals.getInt("maintain weight");
+
+        if (goal.equals("Maintain weight")) {
+            setCaloriesGoal(goals.getInt("maintain weight"));
+            System.out.println(goals.getInt("maintain weight"));
+            return goals.getInt("maintain weight");
+        } else if (goal.equals("Mild weight loss")) {
+            JSONObject mildWeightLoss = goals.getJSONObject("Mild weight loss");
+            setCaloriesGoal(mildWeightLoss.getInt("calory"));
+            return mildWeightLoss.getInt("calory");
+        } else if(goal.equals("Weight loss")){
+            JSONObject weightLoss = goals.getJSONObject("Weight loss");
+            setCaloriesGoal(weightLoss.getInt("calory"));
+            return weightLoss.getInt("calory");
+        } else if(goal.equals("Extreme weight loss")) {
+            JSONObject extremeWeightLoss = goals.getJSONObject("Extreme weight loss");
+            setCaloriesGoal(extremeWeightLoss.getInt("calory"));
+            return extremeWeightLoss.getInt("calory");
+        }else if(goal.equals("Mild weight gain")) {
+            JSONObject mildWeightGain = goals.getJSONObject("Mild weight gain");
+            setCaloriesGoal(mildWeightGain.getInt("calory"));
+            return mildWeightGain.getInt("calory");
+        }else if(goal.equals("Weight gain")) {
+            JSONObject weightGain = goals.getJSONObject("Weight gain");
+            setCaloriesGoal(weightGain.getInt("calory"));
+            return weightGain.getInt("calory");
+        }else if(goal.equals("Extreme weight gain")) {
+            JSONObject extremeWeightGain = goals.getJSONObject("Extreme weight gain");
+            setCaloriesGoal(extremeWeightGain.getInt("calory"));
+            return extremeWeightGain.getInt("calory");
+        } else {
+            return 0;
+        }
+
     }
-
-    public int getMildWeightLossCalories(JSONObject jsonResponse) throws JSONException {
-        JSONObject goals = jsonResponse.getJSONObject("data").getJSONObject("goals");
-        JSONObject mildWeightLoss = goals.getJSONObject("Mild weight loss");
-        setCaloriesGoal(mildWeightLoss.getInt("calory"));
-        return mildWeightLoss.getInt("calory");
-    }
-
-    public int getWeightLossCalories(JSONObject jsonResponse) throws JSONException {
-        JSONObject goals = jsonResponse.getJSONObject("data").getJSONObject("goals");
-        JSONObject weightLoss = goals.getJSONObject("Weight loss");
-        setCaloriesGoal(weightLoss.getInt("calory"));
-        return weightLoss.getInt("calory");
-    }
-
-    public int getExtremeWeightLossCalories(JSONObject jsonResponse) throws JSONException {
-        JSONObject goals = jsonResponse.getJSONObject("data").getJSONObject("goals");
-        JSONObject extremeWeightLoss = goals.getJSONObject("Extreme weight loss");
-        setCaloriesGoal(extremeWeightLoss.getInt("calory"));
-        return extremeWeightLoss.getInt("calory");
-    }
-
-    public int getMildWeightGainCalories(JSONObject jsonResponse) throws JSONException {
-        JSONObject goals = jsonResponse.getJSONObject("data").getJSONObject("goals");
-        JSONObject mildWeightGain = goals.getJSONObject("Mild weight gain");
-        setCaloriesGoal(mildWeightGain.getInt("calory"));
-        return mildWeightGain.getInt("calory");
-    }
-
-    public int getWeightGainCalories(JSONObject jsonResponse) throws JSONException {
-        JSONObject goals = jsonResponse.getJSONObject("data").getJSONObject("goals");
-        JSONObject weightGain = goals.getJSONObject("Weight gain");
-        setCaloriesGoal(weightGain.getInt("calory"));
-        return weightGain.getInt("calory");
-    }
-
-    public int getExtremeWeightGainCalories(JSONObject jsonResponse) throws JSONException {
-        JSONObject goals = jsonResponse.getJSONObject("data").getJSONObject("goals");
-        JSONObject extremeWeightGain = goals.getJSONObject("Extreme weight gain");
-        setCaloriesGoal(extremeWeightGain.getInt("calory"));
-        return extremeWeightGain.getInt("calory");
-    }
-
-
-
 
     public void resetValues() {
         SQLiteDatabase db = getWritableDatabase();

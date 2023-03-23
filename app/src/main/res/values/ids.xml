@@ -11,4 +11,5 @@
     <item name="weight_edittext" type="id"/>
     <item name="exercise_level_spinner" type="id"/>
     <item name="gender_spinner" type="id"/>
+    <item name="goal_value" type="id"/>
 </resources>
