@@ -17,7 +17,7 @@ import java.util.List;
 public class FoodDatabaseHelper extends SQLiteOpenHelper {
 
     private static final String DATABASE_NAME = "food_database";
-    private static final int DATABASE_VERSION = 11;
+    private static final int DATABASE_VERSION = 13;
 
 
     //Food table columns
@@ -38,7 +38,7 @@ public class FoodDatabaseHelper extends SQLiteOpenHelper {
 
 
     // Account details columns
-    public static final String TABLE_ACCOUNT = "food";
+    public static final String TABLE_ACCOUNT = "account";
     static final String COLUMN_ACCOUNT_ID = "account_id";
     static final String COLUMN_AGE = "age";
     static final String COLUMN_HEIGHT = "height";
@@ -47,7 +47,10 @@ public class FoodDatabaseHelper extends SQLiteOpenHelper {
 
     static  final String COLUMN_WEIGHT_GOALS = "weight_goals";
 
-    static  final String COLUMN_GENDER = "weight_goals";
+    static  final String COLUMN_GENDER = "gender";
+
+    public int caloriesGoal;
+
 
 
 
@@ -117,46 +120,60 @@ public class FoodDatabaseHelper extends SQLiteOpenHelper {
         return foodItemList;
     }
 
+    public void setCaloriesGoal(int caloriesGoal){
+        this.caloriesGoal = caloriesGoal;
+    }
 
+    public int getCaloriesGoal(){
+        return caloriesGoal;
+    }
 
     public int getMaintainWeightCalories(JSONObject jsonResponse) throws JSONException {
         JSONObject goals = jsonResponse.getJSONObject("data").getJSONObject("goals");
+        setCaloriesGoal(goals.getInt("maintain weight"));
+        System.out.println(goals.getInt("maintain weight"));
         return goals.getInt("maintain weight");
     }
 
     public int getMildWeightLossCalories(JSONObject jsonResponse) throws JSONException {
         JSONObject goals = jsonResponse.getJSONObject("data").getJSONObject("goals");
         JSONObject mildWeightLoss = goals.getJSONObject("Mild weight loss");
+        setCaloriesGoal(mildWeightLoss.getInt("calory"));
         return mildWeightLoss.getInt("calory");
     }
 
     public int getWeightLossCalories(JSONObject jsonResponse) throws JSONException {
         JSONObject goals = jsonResponse.getJSONObject("data").getJSONObject("goals");
         JSONObject weightLoss = goals.getJSONObject("Weight loss");
+        setCaloriesGoal(weightLoss.getInt("calory"));
         return weightLoss.getInt("calory");
     }
 
     public int getExtremeWeightLossCalories(JSONObject jsonResponse) throws JSONException {
         JSONObject goals = jsonResponse.getJSONObject("data").getJSONObject("goals");
         JSONObject extremeWeightLoss = goals.getJSONObject("Extreme weight loss");
+        setCaloriesGoal(extremeWeightLoss.getInt("calory"));
         return extremeWeightLoss.getInt("calory");
     }
 
     public int getMildWeightGainCalories(JSONObject jsonResponse) throws JSONException {
         JSONObject goals = jsonResponse.getJSONObject("data").getJSONObject("goals");
         JSONObject mildWeightGain = goals.getJSONObject("Mild weight gain");
+        setCaloriesGoal(mildWeightGain.getInt("calory"));
         return mildWeightGain.getInt("calory");
     }
 
     public int getWeightGainCalories(JSONObject jsonResponse) throws JSONException {
         JSONObject goals = jsonResponse.getJSONObject("data").getJSONObject("goals");
         JSONObject weightGain = goals.getJSONObject("Weight gain");
+        setCaloriesGoal(weightGain.getInt("calory"));
         return weightGain.getInt("calory");
     }
 
     public int getExtremeWeightGainCalories(JSONObject jsonResponse) throws JSONException {
         JSONObject goals = jsonResponse.getJSONObject("data").getJSONObject("goals");
         JSONObject extremeWeightGain = goals.getJSONObject("Extreme weight gain");
+        setCaloriesGoal(extremeWeightGain.getInt("calory"));
         return extremeWeightGain.getInt("calory");
     }
 
@@ -186,7 +203,6 @@ public class FoodDatabaseHelper extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getWritableDatabase();
         String query = "DELETE FROM " + TABLE_ACCOUNT + " WHERE " + COLUMN_USER_ID + " = ?";
         db.execSQL(query, new String[]{user_id});
-        db.close();
     }
 
     public int getCaloriesTotal(String userId) {

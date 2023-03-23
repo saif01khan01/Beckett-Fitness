@@ -96,11 +96,7 @@ public class summary_frag extends Fragment {
 
         goalCalorieTextView = view.findViewById(R.id.goal_value);
 
-        if(calorieGoal == 0) {
-            goalCalorieTextView.setText("Set up Account. go to Account > Edit account");
-        } else {
-            goalCalorieTextView.setText(String.valueOf(calorieGoal));
-        }
+        goalCalorieTextView.setText(String.valueOf(databaseHelper.getCaloriesGoal()));
         return view;
     }
 
@@ -117,66 +113,89 @@ public class summary_frag extends Fragment {
         // Set the value in the TextView
         caloriesTotalTextView.setText(String.valueOf(caloriesTotal));
 
+        goalCalorieTextView.setText(String.valueOf(databaseHelper.getCaloriesGoal()));
+
+
+
     }
 
-    public void makeApiCall(int age, String gender, double height, double weight, String activityLevel, String goals) {
+    public void makeApiCall(int age, String gender, double height, double weight, String activityLevel, String goals, View v) {
+
+        String dbActivityLevel;
+
+        if(activityLevel.equals("Sedentary")) {
+            dbActivityLevel = "level_1";
+        } else if (activityLevel.equals("Light")) {
+            dbActivityLevel = "level_2";
+        }else if (activityLevel.equals("Moderate")) {
+            dbActivityLevel = "level_3";
+        }else if (activityLevel.equals("Active")) {
+            dbActivityLevel = "level_4";
+        }else if (activityLevel.equals("Very Active")) {
+            dbActivityLevel = "level_5";
+        }else if (activityLevel.equals("Extra Active")) {
+            dbActivityLevel = "level_6";
+        } else {
+        dbActivityLevel = null;
+        Toast.makeText(v.getContext(), "Check activity level value", Toast.LENGTH_LONG).show();
+        }
         String url = "https://fitness-calculator.p.rapidapi.com/dailycalorie?age=" + age +
                 "&gender=" + gender +
                 "&height=" + height +
                 "&weight=" + weight +
-                "&activitylevel=" + activityLevel;
+                "&activitylevel=" + dbActivityLevel;
 
-        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest
-                (Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
+            JsonObjectRequest jsonObjectRequest = new JsonObjectRequest
+                    (Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
 
-                    @Override
-                    public void onResponse(JSONObject response) {
-                        // Handle the response
-                        try {
-                           FoodDatabaseHelper foodDatabaseHelper = new FoodDatabaseHelper(getContext());
+                        @Override
+                        public void onResponse(JSONObject response) {
+                            // Handle the response
+                            try {
+                                FoodDatabaseHelper foodDatabaseHelper = new FoodDatabaseHelper(getContext());
 
-                           if(goals.equals("Maintain weight")){
-                               calorieGoal = foodDatabaseHelper.getMaintainWeightCalories(response);
-                           } else if (goals.equals("Mild weight loss")) {
-                               calorieGoal = foodDatabaseHelper.getMildWeightLossCalories(response);
-                           }else if (goals.equals("Weight loss")) {
-                               calorieGoal = foodDatabaseHelper.getMildWeightLossCalories(response);
-                           }else if (goals.equals("Extreme weight loss")) {
-                               calorieGoal = foodDatabaseHelper.getMildWeightLossCalories(response);
-                           }else if (goals.equals("Mild weight gain")) {
-                               calorieGoal = foodDatabaseHelper.getMildWeightLossCalories(response);
-                           }else if (goals.equals("Weight gain")) {
-                               calorieGoal = foodDatabaseHelper.getMildWeightLossCalories(response);
-                           }else if (goals.equals("Extreme weight gain")) {
-                               calorieGoal = foodDatabaseHelper.getMildWeightLossCalories(response);
-                           } else {
-                               Toast.makeText(getContext(), "Set up account. Go to Account > Edit Account", Toast.LENGTH_SHORT).show();
-                           }
-                        } catch (JSONException e) {
-                            e.printStackTrace();
+                                if (goals.equals("Maintain weight")) {
+                                    foodDatabaseHelper.getMaintainWeightCalories(response);
+                                } else if (goals.equals("Mild weight loss")) {
+                                    foodDatabaseHelper.getMildWeightLossCalories(response);
+                                } else if (goals.equals("Weight loss")) {
+                                    foodDatabaseHelper.getMildWeightLossCalories(response);
+                                } else if (goals.equals("Extreme weight loss")) {
+                                    foodDatabaseHelper.getMildWeightLossCalories(response);
+                                } else if (goals.equals("Mild weight gain")) {
+                                    foodDatabaseHelper.getMildWeightLossCalories(response);
+                                } else if (goals.equals("Weight gain")) {
+                                     foodDatabaseHelper.getMildWeightLossCalories(response);
+                                } else if (goals.equals("Extreme weight gain")) {
+                                     foodDatabaseHelper.getMildWeightLossCalories(response);
+                                } else {
+                                    Toast.makeText(getContext(), "Set up account. Go to Account > Edit Account", Toast.LENGTH_SHORT).show();
+                                }
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
                         }
-                    }
-                }, new Response.ErrorListener() {
+                    }, new Response.ErrorListener() {
 
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        // Handle the error
-                    }
-                }) {
-            @Override
-            public Map<String, String> getHeaders() throws AuthFailureError {
-                Map<String, String> headers = new HashMap<>();
-                headers.put("X-RapidAPI-Key", "6c7b75ffd0msha91b4c46d576001p10417djsn2af2134e89a3");
-                headers.put("X-RapidAPI-Host", "fitness-calculator.p.rapidapi.com");
-                return headers;
-            }
-        };
+                        @Override
+                        public void onErrorResponse(VolleyError error) {
+                            // Handle the error
+                        }
+                    }) {
+                @Override
+                public Map<String, String> getHeaders() throws AuthFailureError {
+                    Map<String, String> headers = new HashMap<>();
+                    headers.put("X-RapidAPI-Key", "6c7b75ffd0msha91b4c46d576001p10417djsn2af2134e89a3");
+                    headers.put("X-RapidAPI-Host", "fitness-calculator.p.rapidapi.com");
+                    return headers;
+                }
+            };
 
-        // Add the request to the Volley request queue
-        RequestQueue queue = Volley.newRequestQueue(getContext());
-        queue.add(jsonObjectRequest);
+            // Add the request to the Volley request queue
+            RequestQueue queue = Volley.newRequestQueue(v.getContext());
+            queue.add(jsonObjectRequest);
+        }
     }
 
 
 
-}

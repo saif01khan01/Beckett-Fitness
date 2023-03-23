@@ -21,7 +21,6 @@ public class MainScreen extends AppCompatActivity {
     FirebaseAuth mAuth;
 
     //declaration and initialization of fragments
-    home_fragment homeFragment = new home_fragment();
     AddMealFragment addMealFragment = new AddMealFragment();
     AccountFragment accountFragment = new AccountFragment();
 
@@ -44,7 +43,7 @@ public class MainScreen extends AppCompatActivity {
         setContentView(R.layout.activity_main_screen);
 
         bottomNav = findViewById(R.id.BottomNav);
-        getSupportFragmentManager().beginTransaction().replace(R.id.container, homeFragment).commit();
+        getSupportFragmentManager().beginTransaction().replace(R.id.container, addMealFragment).commit();
 
         //obtain instance of firebase auth
         mAuth = FirebaseAuth.getInstance();
@@ -57,9 +56,6 @@ public class MainScreen extends AppCompatActivity {
             @Override
             public boolean onNavigationItemSelected(MenuItem item) {
                 switch (item.getItemId()) {
-                    case R.id.home:
-                        getSupportFragmentManager().beginTransaction().replace(R.id.container,homeFragment).commit();
-                        return true;
                     case R.id.add:
                         getSupportFragmentManager().beginTransaction().replace(R.id.container,addMealFragment).commit();
                         return true;

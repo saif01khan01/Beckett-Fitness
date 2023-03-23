@@ -19,7 +19,7 @@ public class ViewPagerAdapter extends FragmentStateAdapter {
             case 1:
                 return new summary_frag();
             default:
-                return new home_fragment();
+                return new AddMealFragment();
         }
     }
 

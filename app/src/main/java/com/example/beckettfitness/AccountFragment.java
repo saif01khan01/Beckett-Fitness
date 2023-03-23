@@ -6,6 +6,7 @@ import static com.example.beckettfitness.FoodDatabaseHelper.COLUMN_EXERCISE_LEVE
 import static com.example.beckettfitness.FoodDatabaseHelper.COLUMN_GENDER;
 import static com.example.beckettfitness.FoodDatabaseHelper.COLUMN_HEIGHT;
 import static com.example.beckettfitness.FoodDatabaseHelper.COLUMN_USER_ID;
+import static com.example.beckettfitness.FoodDatabaseHelper.COLUMN_WEIGHT_GOALS;
 import static com.example.beckettfitness.FoodDatabaseHelper.TABLE_ACCOUNT;
 
 import android.app.AlertDialog;
@@ -107,9 +108,10 @@ public class AccountFragment extends Fragment {
         ContentValues values = new ContentValues();
         values.put(COLUMN_USER_ID, FirebaseAuth.getInstance().getUid());
         values.put(COLUMN_AGE, accountDetails.getAge());
+        values.put(COLUMN_GENDER, accountDetails.getGender());
         values.put(COLUMN_HEIGHT, accountDetails.getHeight());
         values.put(COLUMN_WEIGHT, accountDetails.getWeight());
-        values.put(COLUMN_GENDER, accountDetails.getGender());
+        values.put(COLUMN_WEIGHT_GOALS, accountDetails.getWeightGoal());
         values.put(COLUMN_EXERCISE_LEVEL, accountDetails.getExerciseLevel());
 
         databaseHelper.removeAccInfo(FirebaseAuth.getInstance().getUid());
@@ -124,7 +126,7 @@ public class AccountFragment extends Fragment {
             // Insert successful
             Toast.makeText(getContext(), "Account details saved", Toast.LENGTH_SHORT).show();
             summary_frag summary_frag = new summary_frag();
-            summary_frag.makeApiCall(accountDetails.getAge(), accountDetails.getGender(), accountDetails.getHeight(), accountDetails.getWeight(), accountDetails.getExerciseLevel(), accountDetails.getWeightGoal());
+            summary_frag.makeApiCall(accountDetails.getAge(), accountDetails.getGender(), accountDetails.getHeight(), accountDetails.getWeight(), accountDetails.getExerciseLevel(), accountDetails.getWeightGoal(), getView());
         }
         db.close();
     }

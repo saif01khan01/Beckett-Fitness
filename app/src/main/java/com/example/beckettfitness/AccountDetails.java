@@ -10,6 +10,8 @@ public class AccountDetails {
 
     private String weightGoal;
 
+    public int caloriesGoal;
+
     String userID;
 
     public AccountDetails(int age, double height, double weight, String gender, String exerciseLevel, String weightGoal, String userID) {
