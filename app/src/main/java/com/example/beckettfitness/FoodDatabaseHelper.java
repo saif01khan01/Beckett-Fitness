@@ -11,13 +11,16 @@ import android.widget.Toast;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 public class FoodDatabaseHelper extends SQLiteOpenHelper {
 
     private static final String DATABASE_NAME = "food_database";
-    private static final int DATABASE_VERSION = 13;
+    private static final int DATABASE_VERSION = 16;
 
 
     //Food table columns
@@ -49,14 +52,9 @@ public class FoodDatabaseHelper extends SQLiteOpenHelper {
 
     static  final String COLUMN_GENDER = "gender";
 
+    static final String COLUMN_DATE = "date";
+
     public int caloriesGoal;
-
-
-
-
-
-
-
 
     private static final String CREATE_FOOD_TABLE =
             "CREATE TABLE " + TABLE_FOOD + " (" +
@@ -65,13 +63,9 @@ public class FoodDatabaseHelper extends SQLiteOpenHelper {
                     COLUMN_NAME + " TEXT, " +
                     COLUMN_BRAND + " TEXT, " +
                     COLUMN_CALORIES + " INTEGER, " +
-                    COLUMN_SERVING_SIZE + " TEXT)";
+                    COLUMN_SERVING_SIZE + " TEXT, " +
+                    COLUMN_DATE + " TEXT)";
 
-    private static final String CREATE_CALORIES_TABLE =
-            "CREATE TABLE " + TABLE_CALORIES + " (" +
-                    COLUMN_CALORIES_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
-                    COLUMN_CALORIES_VALUE + " INTEGER, " +
-                    COLUMN_USER_ID + " TEXT)";
 
     private static final String CREATE_ACCOUNT_TABLE =
             "CREATE TABLE " + TABLE_ACCOUNT + " (" +
@@ -165,22 +159,20 @@ public class FoodDatabaseHelper extends SQLiteOpenHelper {
 
     }
 
-    public void resetValues() {
+    public void resetValues(String uid) {
         SQLiteDatabase db = getWritableDatabase();
 
         // Reset TABLE_CALORIES
         ContentValues caloriesValues = new ContentValues();
         caloriesValues.put(COLUMN_CALORIES_VALUE, 0);
-        db.update(TABLE_CALORIES, caloriesValues, null, null);
+        db.update(TABLE_CALORIES, caloriesValues, COLUMN_USER_ID + "=?", new String[]{uid});
 
         // Reset TABLE_FOOD
-        db.delete(TABLE_FOOD, null, null);
-
-        // Reset TABLE_ACCOUNT
-        //db.delete(TABLE_ACCOUNT, null, null);
+        db.delete(TABLE_FOOD, COLUMN_USER_ID + "=?", new String[]{uid});
 
         db.close();
     }
+
 
 
 
@@ -195,7 +187,7 @@ public class FoodDatabaseHelper extends SQLiteOpenHelper {
 
         // Define the columns to be retrieved
         String[] projection = {
-                "SUM(" + COLUMN_CALORIES_VALUE + ")"
+                "SUM(" + COLUMN_CALORIES + ")"
         };
 
         // Define the selection criteria
@@ -204,7 +196,7 @@ public class FoodDatabaseHelper extends SQLiteOpenHelper {
 
         // Execute the query
         Cursor cursor = db.query(
-                TABLE_CALORIES,
+                TABLE_FOOD,
                 projection,
                 selection,
                 selectionArgs,
@@ -236,18 +228,22 @@ public class FoodDatabaseHelper extends SQLiteOpenHelper {
         values.put(COLUMN_BRAND, foodItem.getBrand());
         values.put(COLUMN_CALORIES, foodItem.getCalories());
         values.put(COLUMN_SERVING_SIZE, foodItem.getServingSize());
+// add today's date to the 'date' column
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
+        Date todayDate = new Date();
+        String todayDateString = dateFormat.format(todayDate);
+        values.put(COLUMN_DATE, todayDateString);
         long foodItemId = db.insert(TABLE_FOOD, null, values);
         db.close();
-
-        // Insert the calories value into the calories table
-        SQLiteDatabase dbCalories = this.getWritableDatabase();
-        ContentValues valuesCalories = new ContentValues();
-        valuesCalories.put(COLUMN_CALORIES_ID, foodItemId);
-        valuesCalories.put(COLUMN_CALORIES_VALUE, foodItem.getCalories());
-        valuesCalories.put(COLUMN_USER_ID, userId);
-        dbCalories.insert(TABLE_CALORIES, null, valuesCalories);
-        dbCalories.close();
     }
+
+    public void removeOldEntries(String userId) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        String today = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(new Date());
+        db.delete(TABLE_FOOD, COLUMN_USER_ID + "=? AND " + COLUMN_DATE + "!=?", new String[]{userId, today});
+        db.close();
+    }
+
 
 
 
@@ -259,18 +255,11 @@ public class FoodDatabaseHelper extends SQLiteOpenHelper {
         db.close();
     }
 
-
-
-
-
-
-
-
     @Override
     public void onCreate(SQLiteDatabase db) {
         db.execSQL(CREATE_FOOD_TABLE);
         db.execSQL(CREATE_ACCOUNT_TABLE);
-        db.execSQL(CREATE_CALORIES_TABLE);
+        //db.execSQL(CREATE_CALORIES_TABLE);
     }
 
     @Override
