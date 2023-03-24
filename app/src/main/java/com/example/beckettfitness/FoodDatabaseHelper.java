@@ -90,7 +90,7 @@ public class FoodDatabaseHelper extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getReadableDatabase();
         String[] columns = {COLUMN_NAME, COLUMN_BRAND, COLUMN_CALORIES, COLUMN_SERVING_SIZE};
         String selection = COLUMN_USER_ID + "=?";
-        String[] selectionArgs = {userId};
+        String[] selectionArgs = {String.valueOf(userId)};
         Cursor cursor = db.query(TABLE_FOOD, columns, selection, selectionArgs, null, null, COLUMN_NAME);
 
         int nameIndex = cursor.getColumnIndex(COLUMN_NAME);

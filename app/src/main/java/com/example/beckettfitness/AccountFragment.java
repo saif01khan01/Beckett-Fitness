@@ -12,6 +12,7 @@ import static com.example.beckettfitness.FoodDatabaseHelper.TABLE_ACCOUNT;
 
 import android.app.AlertDialog;
 import android.content.ContentValues;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -52,11 +53,12 @@ public class AccountFragment extends Fragment {
 
     int goalNo;
 
-    public void setGoalNo(int goalNo){
+    public void setGoalNo(int goalNo) {
         this.goalNo = goalNo;
 
     }
-    public int getGoalNo(){
+
+    public int getGoalNo() {
         return goalNo;
     }
 
@@ -69,6 +71,18 @@ public class AccountFragment extends Fragment {
         logoutButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                // Get the SharedPreferences object
+                SharedPreferences sharedPrefs = getContext().getSharedPreferences("MyPrefs", Context.MODE_PRIVATE);
+
+                // Get the SharedPreferences.Editor object
+                SharedPreferences.Editor editor = sharedPrefs.edit();
+
+                // Remove the goal_calories key-value pair
+                editor.remove("goal_calories");
+
+                // Commit the changes
+                editor.apply();
+
                 FirebaseAuth.getInstance().signOut();
                 // Add code to navigate to the login screen after logout
                 startActivity(new Intent(getActivity(), LoginActivity.class));
@@ -109,7 +123,7 @@ public class AccountFragment extends Fragment {
                         String gender = genderSpinner.getSelectedItem().toString();
 
                         // Create an AccountDetails object with the retrieved values
-                        AccountDetails accountDetails = new AccountDetails(age, height, weight, gender, exerciseLevel , weightGoal, FirebaseAuth.getInstance().getUid());
+                        AccountDetails accountDetails = new AccountDetails(age, height, weight, gender, exerciseLevel, weightGoal, FirebaseAuth.getInstance().getUid());
 
                         saveAccountDetails(accountDetails, v);
                     }
@@ -163,17 +177,17 @@ public class AccountFragment extends Fragment {
 
         String dbActivityLevel;
 
-        if(activityLevel.equals("Sedentary")) {
+        if (activityLevel.equals("Sedentary")) {
             dbActivityLevel = "level_1";
         } else if (activityLevel.equals("Light")) {
             dbActivityLevel = "level_2";
-        }else if (activityLevel.equals("Moderate")) {
+        } else if (activityLevel.equals("Moderate")) {
             dbActivityLevel = "level_3";
-        }else if (activityLevel.equals("Active")) {
+        } else if (activityLevel.equals("Active")) {
             dbActivityLevel = "level_4";
-        }else if (activityLevel.equals("Very Active")) {
+        } else if (activityLevel.equals("Very Active")) {
             dbActivityLevel = "level_5";
-        }else if (activityLevel.equals("Extra Active")) {
+        } else if (activityLevel.equals("Extra Active")) {
             dbActivityLevel = "level_6";
         } else {
             dbActivityLevel = null;
@@ -196,7 +210,7 @@ public class AccountFragment extends Fragment {
 
                             SharedPreferences sharedPreferences = getContext().getSharedPreferences("MyPrefs", MODE_PRIVATE);
                             SharedPreferences.Editor editor = sharedPreferences.edit();
-                            editor.putInt("goal_calories", foodDatabaseHelper.getGoalCalories(response,goals));
+                            editor.putInt("goal_calories", foodDatabaseHelper.getGoalCalories(response, goals));
                             editor.apply();
 
                         } catch (JSONException e) {
@@ -223,8 +237,6 @@ public class AccountFragment extends Fragment {
         RequestQueue queue = Volley.newRequestQueue(v.getContext());
         queue.add(jsonObjectRequest);
     }
-
-
 
 
 }
