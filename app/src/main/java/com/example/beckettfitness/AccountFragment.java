@@ -18,13 +18,13 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.fragment.app.Fragment;
@@ -41,7 +41,9 @@ import com.google.firebase.auth.FirebaseAuth;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class AccountFragment extends Fragment {
@@ -104,29 +106,62 @@ public class AccountFragment extends Fragment {
                     public void onClick(DialogInterface dialog, int which) {
                         // Retrieve the values from the form
                         EditText ageEditText = editAccountView.findViewById(R.id.age_edittext);
-                        int age = Integer.parseInt(ageEditText.getText().toString());
-
                         EditText heightEditText = editAccountView.findViewById(R.id.height_edittext);
-                        int height = Integer.parseInt(heightEditText.getText().toString());
-
                         EditText weightEditText = editAccountView.findViewById(R.id.weight_edittext);
-                        int weight = Integer.parseInt(weightEditText.getText().toString());
-
                         Spinner exerciseLevelSpinner = editAccountView.findViewById(R.id.exercise_level_spinner);
-                        String exerciseLevel = exerciseLevelSpinner.getSelectedItem().toString();
-
-
                         Spinner weightGoalSpinner = editAccountView.findViewById(R.id.weight_loss_goal_spinner);
-                        String weightGoal = weightGoalSpinner.getSelectedItem().toString();
-
                         Spinner genderSpinner = editAccountView.findViewById(R.id.gender_spinner);
+
+                        String ageString = ageEditText.getText().toString();
+                        String heightString = heightEditText.getText().toString();
+                        String weightString = weightEditText.getText().toString();
+                        String exerciseLevel = exerciseLevelSpinner.getSelectedItem().toString();
+                        String weightGoal = weightGoalSpinner.getSelectedItem().toString();
                         String gender = genderSpinner.getSelectedItem().toString();
 
-                        // Create an AccountDetails object with the retrieved values
-                        AccountDetails accountDetails = new AccountDetails(age, height, weight, gender, exerciseLevel, weightGoal, FirebaseAuth.getInstance().getUid());
+                        // Validate the values to ensure they match the rules
+                        List<String> errorMessages = new ArrayList<>();
+                        try {
+                            int age = Integer.parseInt(ageString);
+                            if (age < 0 || age > 80) {
+                                errorMessages.add("Age must be between 0 and 80");
+                            }
+                        } catch (NumberFormatException e) {
+                            errorMessages.add("Invalid age input");
+                        }
 
-                        saveAccountDetails(accountDetails, v);
+                        try {
+                            int height = Integer.parseInt(heightString);
+                            if (height < 130 || height > 230) {
+                                errorMessages.add("Height must be between 130 and 230");
+                            }
+                        } catch (NumberFormatException e) {
+                            errorMessages.add("Invalid height input");
+                        }
+
+                        try {
+                            int weight = Integer.parseInt(weightString);
+                            if (weight < 40 || weight > 160) {
+                                errorMessages.add("Weight must be between 40 and 160");
+                            }
+                        } catch (NumberFormatException e) {
+                            errorMessages.add("Invalid weight input");
+                        }
+
+                        if (!errorMessages.isEmpty()) {
+                            // Show error messages on the dialog
+                            AlertDialog.Builder errorBuilder = new AlertDialog.Builder(getActivity());
+                            errorBuilder.setTitle("Invalid Input");
+                            errorBuilder.setMessage(TextUtils.join("\n", errorMessages));
+                            errorBuilder.setPositiveButton("OK", null);
+                            errorBuilder.show();
+                        } else {
+                            // Create an AccountDetails object with the retrieved values
+                            AccountDetails accountDetails = new AccountDetails(Integer.parseInt(ageString), Integer.parseInt(heightString), Integer.parseInt(weightString), gender, exerciseLevel, weightGoal, FirebaseAuth.getInstance().getUid());
+                            saveAccountDetails(accountDetails, v);
+                        }
                     }
+
                 });
                 builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
                     @Override
@@ -138,6 +173,8 @@ public class AccountFragment extends Fragment {
                 AlertDialog dialog = builder.create();
                 dialog.show();
             }
+
+
         });
 
         return view;
@@ -177,21 +214,21 @@ public class AccountFragment extends Fragment {
 
         String dbActivityLevel;
 
-        if (activityLevel.equals("Sedentary")) {
+        if (activityLevel.equals("Sedentary (Little or no exercise)")) {
             dbActivityLevel = "level_1";
-        } else if (activityLevel.equals("Light")) {
+        } else if (activityLevel.equals("Light (light exercise or sports 1-3 days/week)")) {
             dbActivityLevel = "level_2";
-        } else if (activityLevel.equals("Moderate")) {
+        } else if (activityLevel.equals("Moderate (moderate exercise or sports 4-5 days/week)")) {
             dbActivityLevel = "level_3";
-        } else if (activityLevel.equals("Active")) {
+        } else if (activityLevel.equals("Active (intense exercise 3-4 times/week)")) {
             dbActivityLevel = "level_4";
-        } else if (activityLevel.equals("Very Active")) {
+        } else if (activityLevel.equals("Very Active (Intense exercise 6-7 times/week)")) {
             dbActivityLevel = "level_5";
-        } else if (activityLevel.equals("Extra Active")) {
+        } else if (activityLevel.equals("Extra Active (Very intense exercise daily)")) {
             dbActivityLevel = "level_6";
         } else {
             dbActivityLevel = null;
-            Toast.makeText(v.getContext(), "Check activity level value", Toast.LENGTH_LONG).show();
+            Toast.makeText(v.getContext(), "Check exercise level value", Toast.LENGTH_LONG).show();
         }
         String url = "https://fitness-calculator.p.rapidapi.com/dailycalorie?age=" + age +
                 "&gender=" + gender +
