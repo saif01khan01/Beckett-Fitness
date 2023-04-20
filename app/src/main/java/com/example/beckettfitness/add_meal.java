@@ -1,14 +1,13 @@
 package com.example.beckettfitness;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
 import android.os.Bundle;
 import android.util.Log;
-
-import androidx.appcompat.widget.SearchView;
 import android.widget.Toast;
+
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.SearchView;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -68,7 +67,7 @@ public class add_meal extends AppCompatActivity {
         });
     }
 
-    private void searchForFood(String query) {
+    public void searchForFood(String query) {
         String url = "https://trackapi.nutritionix.com/v2/search/instant?query=" + query;
 
         JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, url, null,

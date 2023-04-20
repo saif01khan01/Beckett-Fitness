@@ -12,4 +12,5 @@
     <item name="exercise_level_spinner" type="id"/>
     <item name="gender_spinner" type="id"/>
     <item name="goal_value" type="id"/>
+    <item name="activity_login" type="id"/>
 </resources>

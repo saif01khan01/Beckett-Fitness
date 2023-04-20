@@ -14,13 +14,13 @@
         android:id="@+id/height_edittext"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Height" />
+        android:hint="Height (in centimetres)" />
 
     <EditText
         android:id="@+id/weight_edittext"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Weight" />
+        android:hint="Weight (in kg between 40kg - 160kg)" />
 
     <TextView
         android:layout_width="match_parent"

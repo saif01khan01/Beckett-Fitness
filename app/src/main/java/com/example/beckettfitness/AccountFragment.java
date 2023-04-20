@@ -180,7 +180,7 @@ public class AccountFragment extends Fragment {
         return view;
     }
 
-    private void saveAccountDetails(AccountDetails accountDetails, View v) {
+    public void saveAccountDetails(AccountDetails accountDetails, View v) {
         // Add the AccountDetails object to the database
         FoodDatabaseHelper databaseHelper = new FoodDatabaseHelper(getContext());
         SQLiteDatabase db = databaseHelper.getWritableDatabase();

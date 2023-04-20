@@ -3,6 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
+    android:id="@+id/activity_login"
     android:layout_height="match_parent"
     tools:context=".LoginActivity">
 
@@ -65,7 +66,7 @@
         android:layout_marginTop="15dp"
         android:layout_marginEnd="128dp"
         android:layout_marginBottom="11dp"
-        android:text="@string/forgotten_login_details"
+        android:text=""
         app:layout_constraintBottom_toTopOf="@+id/login"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

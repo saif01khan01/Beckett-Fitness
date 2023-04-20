@@ -5,8 +5,6 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
-import android.widget.Toast;
-
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -42,17 +40,17 @@ public class FoodDatabaseHelper extends SQLiteOpenHelper {
 
     // Account details columns
     public static final String TABLE_ACCOUNT = "account";
-    static final String COLUMN_ACCOUNT_ID = "account_id";
-    static final String COLUMN_AGE = "age";
-    static final String COLUMN_HEIGHT = "height";
-    static final String COLUMN_WEIGHT = "weight";
-    static final String COLUMN_EXERCISE_LEVEL = "exercise_level";
+    public static final String COLUMN_ACCOUNT_ID = "account_id";
+    public static final String COLUMN_AGE = "age";
+    public static final String COLUMN_HEIGHT = "height";
+    public static final String COLUMN_WEIGHT = "weight";
+    public static final String COLUMN_EXERCISE_LEVEL = "exercise_level";
 
-    static  final String COLUMN_WEIGHT_GOALS = "weight_goals";
+    public static  final String COLUMN_WEIGHT_GOALS = "weight_goals";
 
-    static  final String COLUMN_GENDER = "gender";
+    public static  final String COLUMN_GENDER = "gender";
 
-    static final String COLUMN_DATE = "date";
+    public static final String COLUMN_DATE = "date";
 
     public int caloriesGoal;
 
