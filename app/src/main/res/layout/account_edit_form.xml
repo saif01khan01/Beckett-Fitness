@@ -14,7 +14,7 @@
         android:id="@+id/height_edittext"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Height (in centimetres)" />
+        android:hint="Height (in centimetres between 130cm - 230cm)" />
 
     <EditText
         android:id="@+id/weight_edittext"
